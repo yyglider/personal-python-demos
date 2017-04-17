@@ -1,9 +1,14 @@
-<scheme name="Default copy" version="142" parent_scheme="Default">
+<scheme name="Default copy2" version="142" parent_scheme="Default">
+  <metaInfo>
+    <property name="created">2017-04-17T16:58:05</property>
+    <property name="ide">PyCharmCore</property>
+    <property name="ideVersion">2016.2.3.0.0</property>
+    <property name="modified">2017-04-17T16:59:37</property>
+    <property name="originalScheme">Default</property>
+  </metaInfo>
   <option name="LINE_SPACING" value="1.0" />
-  <option name="EDITOR_FONT_SIZE" value="14" />
-  <option name="CONSOLE_FONT_NAME" value="Monospaced" />
-  <option name="CONSOLE_FONT_SIZE" value="12" />
-  <option name="EDITOR_FONT_NAME" value="Consolas" />
+  <option name="EDITOR_FONT_SIZE" value="12" />
+  <option name="EDITOR_FONT_NAME" value="Monospaced" />
   <attributes>
     <option name="MARKDOWN_NAVIGATOR.BOLD_TEXT_CODE_TEXT">
       <value>
@@ -7755,6 +7760,14 @@
       <value>
         <option name="BACKGROUND" value="dff6e5" />
         <option name="FONT_TYPE" value="1" />
+      </value>
+    </option>
+    <option name="PY.BUILTIN_NAME">
+      <value>
+        <option name="FOREGROUND" value="80" />
+        <option name="EFFECT_COLOR" value="3c3f41" />
+        <option name="ERROR_STRIPE_COLOR" value="3c3f41" />
+        <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
   </attributes>
