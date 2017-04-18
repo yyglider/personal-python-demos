@@ -3,7 +3,7 @@
     <property name="created">2017-04-17T16:59:25</property>
     <property name="ide">PyCharmCore</property>
     <property name="ideVersion">2016.2.3.0.0</property>
-    <property name="modified">2017-04-17T16:59:37</property>
+    <property name="modified">2017-04-18T08:49:41</property>
     <property name="originalScheme">Github</property>
   </metaInfo>
   <option name="LINE_SPACING" value="1.0" />
@@ -392,6 +392,7 @@
       <value>
         <option name="FOREGROUND" value="990000" />
         <option name="FONT_TYPE" value="1" />
+        <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
     <option name="DEFAULT_FUNCTION_DECLARATION">
@@ -8817,6 +8818,7 @@
     <option name="PY.BUILTIN_NAME">
       <value>
         <option name="FOREGROUND" value="86b3" />
+        <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
     <option name="PY.CLASS_DEFINITION">
