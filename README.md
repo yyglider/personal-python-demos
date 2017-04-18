@@ -1,3 +1,3 @@
 #personal python demos
 
-some python demos,memos
+some python demos , memos

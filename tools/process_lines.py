@@ -1,10 +1,27 @@
-import string
+import chardet
+
+path = 'D:/006564/Desktop/new2.txt'
+#
+# fp = open(path,'r')
+# tt = fp.read()
+# encoding = chardet.detect(tt)
+# print(encoding)
+#
+#
 
 
-path = 'D:/006564/Desktop/client.txt'
+
+
+#
+# content = fp.read().encode('utf-8')
+#
+# for lines in content:
+#     print(lines.strip())
+
 with open(path,'r') as file:
     for lines in file:
-        print(lines.strip()[0:2])
+        print(lines)
+
 # a=0
 # a_set = set()
 # a_dict = dict()
