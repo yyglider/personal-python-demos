@@ -1,5 +1,5 @@
 from xlwt import Workbook
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import xlrd
 import datetime
 
@@ -34,26 +34,31 @@ def save_to_txt(result):
 def save_to_excel(result):
     save_book = Workbook()
     save_sheet1 = save_book.add_sheet('Sheet 2')
-    # save_sheet1.col(1).width = 3000
-    # save_sheet1.col(2).width = 3000
-    # save_sheet1.col(3).width = 4500
-    # save_sheet1.col(4).width = 5000
-    # save_sheet1.col(5).width = 5000
-    # save_sheet1.col(6).width = 4500
-    # save_sheet1.col(7).width = 4500
+    # save_sheet1.col(1).width = 1200
+    # save_sheet1.col(2).width = 17200
+    # save_sheet1.col(3).width = 1200
     version_dict = defaultdict(list)
     for row, value in enumerate(result):
         if row > 4:
             v_info = value[1].split("|")
             if len(v_info) > 1:
-                system = v_info[0]
+                system = str(v_info[0]).upper()
                 version = ''.join(str(e) for e in v_info[1:])
                 num_of_person = str(int(value[2]))
                 version_dict[system].append((version, num_of_person))
+            else:
+                system = str(value[1]).upper()
+                version = ''
+                num_of_person = str(int(value[2]))
+                version_dict[system].append((version, num_of_person))
 
+    sorted_version_list = sorted(version_dict.items(), key=lambda d: d[0]) # 对key进行排序
     line_num = 0
-    for system in version_dict:
+    for key in sorted_version_list:
+        system = key[0]
         verison_list = version_dict[system]
+        if system == "ROOT" or system == "TAS" or system == "TEL" or system == "THIRD":
+            continue
         for rx, value in enumerate(verison_list):
             if rx == 0:
                 print(system, value[0], value[1])
