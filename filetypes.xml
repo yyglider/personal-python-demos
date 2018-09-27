@@ -4,6 +4,7 @@
     <extensionMap>
       <mapping pattern="demo3.py" type="PLAIN_TEXT" />
       <mapping ext="dat" type="PLAIN_TEXT" />
+      <mapping ext="ini" type="PLAIN_TEXT" />
       <mapping pattern="backtest_demo1" type="Python" />
     </extensionMap>
   </component>
