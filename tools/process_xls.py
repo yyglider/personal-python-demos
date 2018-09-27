@@ -3,10 +3,11 @@ from collections import defaultdict, OrderedDict
 import xlrd
 import datetime
 
-input_path = "d:\\006564\\Desktop\\test.xls"
+input_path = "d:\\006564\\Desktop\\data2.xlsx"
+# input_path = "d:\\006564\\Desktop\\low.xls"
 output_path = "d:\\006564\\Desktop" + "\\" + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + "_result"
 sep = "|"  # 原始文本每行数据的字段分隔符
-save_as_file = True  # 是否保存到新文件
+save_as_file = False  # 是否保存到新文件
 
 
 # 对字段列表进行处理,返回新的行
@@ -25,9 +26,20 @@ def process_excel_row(arow):
 # 写入到文件
 def save_to_txt(result):
     output_file = output_path + ".txt"
+
+    count_dict = defaultdict(lambda: 0)  # 使用lambda来定义简单的函数
+    for record_line in result:
+        workNo = record_line[9]
+        name = record_line[10]
+        department = record_line[11]
+        worker_info = workNo + "-" + name + "-" + department
+        count_dict[worker_info] += 1
+
     with open(output_file, "w") as output_file:
-        for line in result:
-            output_file.write(line + "\n")
+        for key in count_dict:
+            print(key + "   "+ str(count_dict[key]))
+            output_file.write(key + "   "+ str(count_dict[key]))
+
     print("save to file done!")
 
 
@@ -37,61 +49,72 @@ def save_to_excel(result):
     # save_sheet1.col(1).width = 1200
     # save_sheet1.col(2).width = 17200
     # save_sheet1.col(3).width = 1200
-    version_dict = defaultdict(list)
-    for row, value in enumerate(result):
-        if row > 4:
-            v_info = value[1].split("|")
-            if len(v_info) > 1:
-                system = str(v_info[0]).upper()
-                version = ''.join(str(e) for e in v_info[1:])
-                num_of_person = str(int(value[2]))
-                version_dict[system].append((version, num_of_person))
-            else:
-                system = str(value[1]).upper()
-                version = ''
-                num_of_person = str(int(value[2]))
-                version_dict[system].append((version, num_of_person))
-
-    sorted_version_list = sorted(version_dict.items(), key=lambda d: d[0]) # 对key进行排序
     line_num = 0
-    for key in sorted_version_list:
-        system = key[0]
-        verison_list = version_dict[system]
-        if system == "ROOT" or system == "TAS" or system == "TEL" or system == "THIRD":
-            continue
-        for rx, value in enumerate(verison_list):
-            if rx == 0:
-                print(system, value[0], value[1])
-                save_sheet1.write(line_num, 0, system)
-                save_sheet1.write(line_num, 1, value[0])
-                save_sheet1.write(line_num, 2, value[1])
-            else:
-                print(value[0], value[1])
-                save_sheet1.write(line_num, 1, value[0])
-                save_sheet1.write(line_num, 2, value[1])
-            line_num += 1
-    # nrows = len(result)
-    # for rx in range(nrows):
-    #     for cx, c_value in enumerate(result[rx]):
-    #         save_sheet1.write(rx, cx, c_value)
+    for record in result:
+        save_sheet1.write(line_num, 1, record[3])
+        save_sheet1.write(line_num, 2, record[6])
+        line_num += 1
+
     save_book.save(output_path + ".xls")
     print("save to flie done")
 
+
+
+
 # 屏幕打印出来
 def print_to_screen(result):
-    version_dict = defaultdict(list)
-    # print(result)
-    # for row, value in enumerate(result):
-    #     if row > 4:
-    #         v_info = value[1].split("|")
-    #         if len(v_info) > 1:
-    #             system = v_info[0]
-    #             version = ''.join(str(e) for e in v_info[1:])
-    #             num_of_person = str(int(value[2]))
-    #             version_dict[system].append((version,num_of_person))
-    #
-    # for system in version_dict:
-    #     print(system,version_dict[system])
+    # mac_set = set()
+    # for record in result:
+    #     if(record[3] == 2):
+    #         macs = record[9].split(";")
+    #         for mac in macs:
+    #             if mac is not None:
+    #                 mac_set.add(mac)
+    # for val in mac_set:
+    #     print(val)
+    # print("size " + str(len(mac_set)))
+
+
+    # ip_set = set()
+    # for record in result:
+    #     if(record[3] == 1 or record[3] == 2):
+    #         if record[4] != 'gprs':
+    #             ip = record[5]
+    #             if ip is not None:
+    #                 ip_set.add(ip)
+    # for val in ip_set:
+    #     print(val)
+    # print("size " + str(len(ip_set)))
+
+    # count = 0
+    # mobile_phones = set()
+    # for record in result:
+    #     if record[3] == 1 or record[3] == 2:
+    #         if record[4] == 'gprs':
+    #             # mobile = record[10].split(";")[1]
+    #             # mobile_phones.add(mobile)
+    #             count += 1
+    # print(count)
+    # for val in mobile_phones:
+    #     print(val)
+
+    trade_cnt = 0
+    trade_value = 0
+    for line in result:
+            if int(line[5]) > 5000000:
+                trade_cnt += 1
+                trade_value += line[5]
+
+    print(trade_cnt,trade_value)
+
+    # count_dict = defaultdict(lambda: 0)  # 使用lambda来定义简单的函数
+    # for record_line in result:
+    #     workNo = record_line[9]
+    #     name = record_line[10]
+    #     department = record_line[11]
+    #     count_dict[name] += 1
+    # print(count_dict)
+
 
 
 # 读取excel的每一行
@@ -124,29 +147,41 @@ def get_row_data(bk, sh, rowx, colrange):
 
 if __name__ == '__main__':
 
-    file_type = input_path.split(".")[1]
+    wtls_path = 'D:/006564/Desktop/wtls.csv'
+    path2 = 'D:/006564/Desktop/dlls.csv'
+    file_type = wtls_path.split(".")[1]
 
     try:
         # 处理excel
         if file_type == "xlsx" or file_type == "xls" or file_type == "csv":
-            result = []
-            book = xlrd.open_workbook(input_path)
-            # print("The number of worksheets is {0}".format(book.nsheets))
-            # print("Worksheet name(s): {0}".format(book.sheet_names()))
-            print("start to process sheet 1")
-            sh = book.sheet_by_index(0)
-            # print("Cell D30 is {0}".format(sh.cell_value(rowx=29, colx=3)))
-            nrows, ncols = sh.nrows, sh.ncols
+            print("begin to process {0}".format(wtls_path))
+            wtls_book = xlrd.open_workbook(wtls_path)
+            wtls_sh = wtls_book.sheet_by_index(0)
+            nrows, ncols = wtls_sh.nrows, wtls_sh.ncols
             print("start to process {0} rows and {1} cols".format(nrows, ncols))
             colrange = range(ncols)
             for rx in range(nrows):
-                arow = get_row_data(book, sh, rx, colrange)  # arow is a list
-                new_arow = process_excel_row(arow)
-                result.append(new_arow)
-            if save_as_file:
-                save_to_excel(result)
-            else:
-                print_to_screen(result)
+                arow = get_row_data(wtls_book, wtls_sh, rx, colrange)  # arow is a list
+                print(arow)
+
+                # result = []
+            # book = xlrd.open_workbook(input_path)
+            # # print("The number of worksheets is {0}".format(book.nsheets))
+            # # print("Worksheet name(s): {0}".format(book.sheet_names()))
+            # print("start to process sheet 1")
+            # sh = book.sheet_by_index(0)
+            # # print("Cell D30 is {0}".format(sh.cell_value(rowx=29, colx=3)))
+            # nrows, ncols = sh.nrows, sh.ncols
+            # print("start to process {0} rows and {1} cols".format(nrows, ncols))
+            # colrange = range(ncols)
+            # for rx in range(nrows):
+            #     arow = get_row_data(book, sh, rx, colrange)  # arow is a list
+            #     new_arow = process_excel_row(arow)
+            #     result.append(new_arow)
+            # if save_as_file:
+            #     save_to_excel(result)
+            # else:
+            #     print_to_screen(result)
         # 处理其他文本类型
         else:
             result = []
